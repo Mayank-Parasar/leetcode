@@ -40,23 +40,41 @@ public:
 };
 
 template <typename T>
-Array<T>::Array()
+Array<T>::Array(T arr[], int s) {
+    ptr = new T[s];
+    size = s;
+
+    for(int i = 0; i < size; i++)
+        ptr[i] = arr[i];
+}
+
+template <typename T>
+void Array<T>::print() {
+    for (int i = 0; i < size; i++)
+        cout << " " << *(ptr + i);
+    cout << endl;
+}
 
 int main () {
     cout << myMax<int> (3, 7) << endl;   // Call myMax for int
     cout << myMax<double> (3.0, 7.0) << endl;   // call myMax for double
     cout << myMax<char> ('g', 'e') << endl;     // call myMax for char
 
-        int a[5] = {10, 50, 30, 40, 10};
-        int n = sizeof(a) / sizeof(a[0]);
+    int a[5] = {10, 50, 30, 40, 10};
+    int n = sizeof(a) / sizeof(a[0]);
 
-        // calls template function
-        bubbleSort(a, 5);
+    // calls template function
+    bubbleSort(a, 5);
 
-        cout << "Sorted array : ";
-        for (int i = 0; i < n; i++)
-            cout << a[i] << " ";
-        cout << endl;
+    cout << "Sorted array : ";
+    for (int i = 0; i < n; i++)
+        cout << a[i] << " ";
+    cout << endl;
+
+    int arr[5] = { 1, 2, 3, 4,5};
+    Array<int> b (arr, 5);
+    b.print();
+
 
     return 0;
 }
