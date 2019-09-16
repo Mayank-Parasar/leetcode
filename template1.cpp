@@ -55,6 +55,14 @@ void Array<T>::print() {
     cout << endl;
 }
 
+template<class T, class U = char>
+        class A   {
+        public:
+            T x;
+            U y;
+            A()  { cout <<"Constructor Called" << endl; }
+        };
+
 int main () {
     cout << myMax<int> (3, 7) << endl;   // Call myMax for int
     cout << myMax<double> (3.0, 7.0) << endl;   // call myMax for double
@@ -75,6 +83,8 @@ int main () {
     Array<int> b (arr, 5);
     b.print();
 
+
+    A<char> c; // This will call A<char, char>
 
     return 0;
 }
