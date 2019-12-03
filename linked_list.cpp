@@ -27,6 +27,9 @@ struct node {
         cout << " size of the list is: " << ++size_of_list << endl;
         return;
     }
+
+    // declare
+    void print_list(node* );
 };
 
 ostream & operator << (ostream &out, node* n1) {
@@ -41,6 +44,14 @@ ostream & operator << (ostream &out, node* n1) {
     return out;
 }
 
+void node::print_list(node* list) {
+    while (list->next != nullptr) {
+        cout << list << endl;
+        list = list->next;
+    }
+    cout << list << endl;
+}
+
 int main(int argc, char const *argv[]) {
     /* code */
 
@@ -50,5 +61,7 @@ int main(int argc, char const *argv[]) {
     cout << b << endl;
     node* c = new node(3);
     b->add_elem_last(b, c);
+    // print the link list in nice format
+    b->print_list(b);
     return 0;
 }
