@@ -22,8 +22,8 @@ Output: ..RR.LL..RR
 #include <vector>
 using namespace std;
 
-//string initial = "..R...L..R.";
-string initial = "..RR.LL..R.";
+string initial = "..R...L..R.";
+//string initial = "..RR.LL..R.";
 
 void update_wavefront(vector<int>& waveR, vector<int>& waveL) {
     // Reset both wavefronts
