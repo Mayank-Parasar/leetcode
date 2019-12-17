@@ -25,5 +25,8 @@ int main() {
 
     vector<int> vect = {3, 5, 2, 4, 6, 8};
     cout << kth_largest_elem(vect, 3);
+    cout << endl;
+    for(auto i : vect)
+        cout << i << " ";
     return 0;
 }
