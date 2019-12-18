@@ -48,6 +48,28 @@ void in_order_traversal(node* node_) {
 
 }
 
+vector<node*> working_set; // global working queue
+
+void bfs(node* node_) {
+
+    cout << node_->val << " ";
+    // erase this node from the working set
+    if(working_set.size() != 0)
+        working_set.erase(working_set.begin());
+
+    // populate the working queue
+    if(node_->left_child != nullptr)
+        working_set.push_back(node_->left_child);
+    if(node_->right_child != nullptr)
+        working_set.push_back(node_->right_child);
+
+    if(working_set.size() != 0)
+        bfs(*(working_set.begin()));
+
+    // loop until the working set is finished
+
+}
+
 int main() {
     node* node1 = new node(1);
     node* node2 = new node(2);
@@ -72,8 +94,10 @@ int main() {
 
     // node9->right_child = node8;
 
+    // in_order_traversal(node6);
 
-    in_order_traversal(node6);
+    working_set.push_back(node6);
+    bfs(node6);
 
     return 0;
 }
