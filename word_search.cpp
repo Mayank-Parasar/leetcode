@@ -85,6 +85,6 @@ int main() {
 
     vector<char> word_ = {'F', 'O', 'A', 'M'};
 
-    cout << word_search(matrix, word_);
+    cout << (word_search(matrix, word_) ? "True" : "False") << endl;
     return 0;
 }
