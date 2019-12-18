@@ -50,9 +50,12 @@ void in_order_traversal(node* node_) {
 
 vector<node*> working_set; // global working queue
 
+// populate the row ids here
 void bfs(node* node_) {
 
     cout << node_->val << " ";
+
+
     // erase this node from the working set
     if(working_set.size() != 0)
         working_set.erase(working_set.begin());
@@ -89,14 +92,16 @@ int main() {
     node2->left_child = node3;
 
     node7->left_child = node4;
-    node4->right_child = node8;
+//    node4->right_child = node8;
     node7->right_child = node9;
 
-    // node9->right_child = node8;
+    node9->right_child = node8;
 
     // in_order_traversal(node6);
 
     working_set.push_back(node6);
+    // populate its row-id
+    node6->row_id = 0;
     bfs(node6);
 
     return 0;
