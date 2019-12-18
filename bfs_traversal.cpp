@@ -33,17 +33,17 @@ struct node {
 
 };
 
-void pre_order_traversal(node* node_) {
+void in_order_traversal(node* node_) {
 
     if(node_ == nullptr)
         return;
 
-    pre_order_traversal(node_->left_child);
+    in_order_traversal(node_->left_child);
     cout << node_->val << " ";
 //    pre_order_traversal(node_);
 //    cout << node_->val;
     if(node_->right_child != nullptr)
-        pre_order_traversal(node_->right_child);
+        in_order_traversal(node_->right_child);
     // cout << node_->val;
 
 }
@@ -73,7 +73,7 @@ int main() {
     // node9->right_child = node8;
 
 
-    pre_order_traversal(node6);
+    in_order_traversal(node6);
 
     return 0;
 }
