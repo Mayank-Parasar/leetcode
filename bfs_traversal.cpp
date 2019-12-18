@@ -39,7 +39,7 @@ void pre_order_traversal(node* node_) {
         return;
 
     pre_order_traversal(node_->left_child);
-    cout << node_->val;
+    cout << node_->val << " ";
 //    pre_order_traversal(node_);
 //    cout << node_->val;
     if(node_->right_child != nullptr)
@@ -67,9 +67,11 @@ int main() {
     node2->left_child = node3;
 
     node7->left_child = node4;
+    node4->right_child = node8;
     node7->right_child = node9;
 
-    node9->right_child = node8;
+    // node9->right_child = node8;
+
 
     pre_order_traversal(node6);
 
