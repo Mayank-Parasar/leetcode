@@ -58,6 +58,12 @@ void findFloor(node* node_, int& floor, int& k) {
     }
 }
 
+
+void findCeil(node* node_, int& ceil, int& k) {
+    // TODO
+    return;
+}
+
 int main() {
 
     node *node1 = new node(8);
@@ -79,9 +85,12 @@ int main() {
     print_tree(node1);
     cout << endl;
     int floor = -1;
-    int k = 5;
+    int k = 1;
     findFloor(node1, floor, k);
-    cout << floor;
+    if(floor == -1)
+        cout << "None";
+    else
+        cout << floor;
 
     return 0;
 }
