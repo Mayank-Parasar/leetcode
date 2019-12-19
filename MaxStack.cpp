@@ -69,5 +69,7 @@ int main() {
 
     cout << s->max();
 
+    delete s;
+
     return 0;
 }
