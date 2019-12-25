@@ -56,7 +56,8 @@ int main() {
 
     vector<int> vec1 = {1, 3, 5, 7, 8, 10};
     vector<int> vec2 = {2, 4, 6, 9};
-
+//    vector<int> vec1 = {};
+//    vector<int> vec2 = {2, 4, 6, 9};
     vector<int> result = merge(vec1, vec2);
 
     for(auto i : result)
