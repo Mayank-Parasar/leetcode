@@ -69,8 +69,8 @@ vector<int> look_and_say(vector<int>& vect) {
 int main() {
 
     vector<int> vect = {1};
-    // vector<int> nth_term;
-    for(int kk=0; kk < 5; kk++) {
+
+    for(int kk=0; kk < 5; kk++) {  // for loop for computing the kth term in the sequence
         vect = look_and_say(vect);
 
         for(auto i : vect)
