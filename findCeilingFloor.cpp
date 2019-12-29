@@ -7,6 +7,11 @@
  * find the floor (less than or equal to) of k, and the ceiling (larger than or equal to) of k.
  * If either does not exist, then print them as None.
  *
+ *                   8
+ *                /    \
+ *               4      12              <<== Tree-1
+ *              / \    /  \
+ *             2   6  10   14
  */
 
 #include <iostream>
@@ -61,7 +66,25 @@ void findFloor(node* node_, int& floor, int& k) {
 
 void findCeil(node* node_, int& ceil, int& k) {
     // TODO
-    return;
+
+    if(node_ == nullptr)
+        return;
+
+    if(k > node_->val) {
+        // don't store
+        // go to right
+        findCeil(node_->right, ceil, k);
+    }
+    else if(k < node_->val) {
+        // store the val
+        ceil = node_->val;
+        // go to left
+        findCeil(node_->left, ceil, k);
+    }
+    else if(k == node_->val) {
+        ceil = node_->val;
+        return;
+    }
 }
 
 int main() {
@@ -85,12 +108,23 @@ int main() {
     print_tree(node1);
     cout << endl;
     int floor = -1;
-    int k = 1;
+    int k = 15;     // this is the number that need to be searched in the BST
     findFloor(node1, floor, k);
     if(floor == -1)
-        cout << "None";
+        cout << "Floor of the number is: " << "None";
     else
-        cout << floor;
+        cout << "Floor of the number is: " << floor;
+
+    cout << endl;
+
+    int ceil = -1;
+    findCeil(node1, ceil, k);
+
+    if(ceil == -1)
+        cout << "Ceil of the number is: " << "None";
+    else
+        cout << "Ceil of the number is: " << ceil;
+
 
     return 0;
 }
