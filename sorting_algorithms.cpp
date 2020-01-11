@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <cstdlib>  // for random-number generator
+#include <assert.h>
 
 using namespace std;
 
@@ -78,7 +79,7 @@ int partition(vector<int>& a, int low, int high) {
     int ii = low - 1; // this will keep track at what location (index)
                     // should pivot element be inserted
                     // such that left of it are all elements which are less than
-                    // and right of it are all elements which are greated than
+                    // and right of it are all elements which are greater than
 
     for(int jj = low; jj <= high-1; jj++) {
         if(a[jj] < a[pivot]) {
@@ -104,6 +105,75 @@ vector<int> quick_sort(vector<int>& a, int low, int high) { // need to pass by r
     return a;
 }
 
+// merge the two sub array of a into a
+// first sub-array is a[l ... m]
+// second sub-array is a[m+1 ... r]
+void merge(vector<int>&a, int l, int m, int r) {
+
+    vector<int>::const_iterator left = a.begin() + l;
+    vector<int>::const_iterator middle = a.begin() + m;
+    vector<int>::const_iterator right = a.begin() + r;
+
+    vector<int> left_vector(left, middle+1); // copied the original vector slice
+    vector<int> right_vector(middle+1, right+1); // copied the original vector slice
+
+    // merge the sub-array into the original array a[l ... r]
+    int ii = 0; // for left_vector
+    int kk = 0; // for right_vector
+    int jj = l; // for the original vector 'a'
+
+    while(ii != (left_vector.size()) ||
+        kk != (right_vector.size())) {
+
+        if(ii == left_vector.size() &&
+            kk <= right_vector.size() - 1) {
+            a[jj] = right_vector[kk];
+            jj++;
+            if (kk <= right_vector.size() - 1)
+                kk++;
+        }
+        else if(ii <= left_vector.size() - 1 &&
+                kk == right_vector.size()) {
+            a[jj] = left_vector[ii];
+            jj++;
+            if(ii <= left_vector.size() - 1)
+                ii++;
+        }
+        else if(left_vector[ii] < right_vector[kk]) {
+            a[jj] = left_vector[ii];
+            jj++;
+            if(ii <= left_vector.size() - 1)
+                ii++;
+        }
+        else if(right_vector[kk] <= left_vector[ii]) {
+            a[jj] = right_vector[kk];
+            jj++;
+            if(kk <= right_vector.size() - 1)
+                kk++;
+        }
+        else
+            assert(0); // should not come here
+    }
+    // cout <<"l: " << l <<" m:" << m << " r: " << r << " jj: " << jj << endl;
+    assert(jj == r+1);
+
+    return;
+}
+
+vector<int> merge_sort(vector<int>&a, int l, int r) {
+
+    if(l < r) {
+        int m = l + (r - l)/2;
+
+        merge_sort(a, l, m);
+        merge_sort(a, m+1, r);
+
+        merge(a, l, m, r);
+    }
+
+    return a;
+}
+
 int main() {
 
     srand(42);
@@ -111,11 +181,14 @@ int main() {
     vector<int> a = {2, 5, 1, 7, 9, 3, 6, 8, 5};
     vector<int> b = {1, 2, 3, 4, 5, 6, 7};
     vector<int> orig_a = a;
+    vector<int> orig_a2 = a;
 
     vector<int> selection_sorted = selection_sort(a);
     vector<int> bubble_sorted = bubble_sort(a);
     vector<int> insertion_sorted = insertion_sort(a);
-    vector<int> quick_sorted = quick_sort(orig_a, 0, a.size() - 1); // with randomized pivot
+    vector<int> quick_sorted = quick_sort(orig_a, 0, a.size() - 1); // with randomized pivot [divide and conquer]
+
+    vector<int> merge_sorted = merge_sort(orig_a2, 0, orig_a2.size() - 1);
 
     cout << "Original vector" << endl;
     for(auto  i: a)
@@ -147,6 +220,13 @@ int main() {
     cout << "Output from quick-sort" << endl;
 
     for(auto i : quick_sorted)
+        cout << i << " ";
+
+    cout << endl;
+
+    cout << "Output from merge-sort" << endl;
+
+    for(auto i : merge_sorted)
         cout << i << " ";
 
     return 0;
