@@ -33,7 +33,6 @@ void find_triplets(const vector<int>& nums) {
             }
         }
     }
-
 }
 
 int main() {
