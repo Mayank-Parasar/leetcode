@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <vector>
+#include <cstdlib>  // for random-number generator
 
 using namespace std;
 
@@ -66,14 +67,55 @@ vector<int> insertion_sort(vector<int> a) {
     return a;
 }
 
+int partition(vector<int>& a, int low, int high) {
+    int pivot = low + ( std::rand() % ( high - low + 1 ) );
+
+    // cout << "low: " << low << " high: " << high << " pivot: " << pivot << endl;
+    assert(pivot > low);
+
+    // assert(pivot < high);
+
+    int ii = low - 1; // this will keep track at what location (index)
+                    // should pivot element be inserted
+                    // such that left of it are all elements which are less than
+                    // and right of it are all elements which are greated than
+
+    for(int jj = low; jj <= high-1; jj++) {
+        if(a[jj] < a[pivot]) {
+            ii++;
+            swap(a[ii], a[jj]);
+        }
+    }
+    swap(a[ii+1], a[pivot]);
+    return (ii + 1); // left of 'ii+1' are all less than element and right of 'ii+1' are all greater than element
+}
+
+// with randomized 'pivot'
+vector<int> quick_sort(vector<int>& a, int low, int high) { // need to pass by reference for quick sort
+    if(low < high) {
+
+        int pivot_ = partition(a, low, high);
+
+        // recursively call quick-sort
+        quick_sort(a, low, pivot_ - 1);
+        quick_sort(a, pivot_+1, high);
+    }
+
+    return a;
+}
+
 int main() {
+
+    srand(42);
 
     vector<int> a = {2, 5, 1, 7, 9, 3, 6, 8, 5};
     vector<int> b = {1, 2, 3, 4, 5, 6, 7};
+    vector<int> orig_a = a;
 
     vector<int> selection_sorted = selection_sort(a);
     vector<int> bubble_sorted = bubble_sort(a);
     vector<int> insertion_sorted = insertion_sort(a);
+    vector<int> quick_sorted = quick_sort(orig_a, 0, a.size() - 1); // with randomized pivot
 
     cout << "Original vector" << endl;
     for(auto  i: a)
@@ -98,6 +140,13 @@ int main() {
     cout << "Output from insertion-sort" << endl;
 
     for(auto i : insertion_sorted)
+        cout << i << " ";
+
+    cout << endl;
+
+    cout << "Output from quick-sort" << endl;
+
+    for(auto i : quick_sorted)
         cout << i << " ";
 
     return 0;
