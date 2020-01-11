@@ -174,6 +174,11 @@ vector<int> merge_sort(vector<int>&a, int l, int r) {
     return a;
 }
 
+vector<int> heap_sort(vector<int>a) {
+
+    return(a);
+}
+
 int main() {
 
     srand(42);
