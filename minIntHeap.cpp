@@ -13,14 +13,15 @@ using namespace std;
 
 class minIntHeap {
 public:
-    minIntHeap(int=10, int=0); // must declare ctor inside class..
+    // minIntHeap(); // default
+    // minIntHeap(int=10, int=0); // must declare ctor inside class..
 
     int getLeftChildIndex(int parentIndex) { return 2 * parentIndex + 1; }
     int getRightChildIndex(int parentIndex) { return 2 * parentIndex+ 2; }
     int getParentIndex(int childIndex) { return (childIndex - 1)/ 2;}
 
-    bool hasLeftChild(int index) { return getLeftChildIndex(index) < size; }
-    bool hasRightChild(int index) { return getRightChildIndex(index) < size; }
+    bool hasLeftChild(int index) { return getLeftChildIndex(index) < items.size(); }
+    bool hasRightChild(int index) { return getRightChildIndex(index) < items.size(); }
     bool hasParent(int index) { return getParentIndex(index) >= 0; }
 
     int leftChild(int index) { return items[index]; }
@@ -32,22 +33,22 @@ public:
 
     int pop();
     void add(int item);
-    void swap(int, int);
+    // void swap(int, int);
 
     void print();
 
 private:
-    int capacity;
-    int size;
+    // int capacity;
+    // int size;
     vector<int> items;
 };
 
 // ctor
-minIntHeap::minIntHeap(int cap, int s) {
-    capacity = cap;
-    size = s;
-    items.resize(cap);
-}
+//minIntHeap::minIntHeap(int cap, int s) {
+//    // capacity = cap;
+//    // size = s;
+//    items.resize(cap);
+//}
 
 void
 minIntHeap::print() {
@@ -60,8 +61,11 @@ minIntHeap::print() {
 int
 minIntHeap::pop() {
     int item = items[0];
-    items[0] = items[size - 1];
-    size--;
+
+//    items[0] = items[size - 1];
+//    size--;
+    items[0] = items.back();
+    items.pop_back();
 
     heapifyDown();
     return item;
@@ -69,22 +73,23 @@ minIntHeap::pop() {
 
 void
 minIntHeap::add(int item) {
-    items[size] = item;
-    size++;
+    // items[size] = item;
+    // size++;
+    items.push_back(item);
     heapifyUp();
 }
 
-void
-minIntHeap::swap(int index1, int index2) {
-    swap(items[index1], items[index2]);
-    return;
-}
+//void
+//minIntHeap::swap(int index1, int index2) {
+//    swap(items[index1], items[index2]);
+//    return;
+//}
 
 void
 minIntHeap::heapifyUp() {
-    int index = size - 1;
+    int index = items.size() - 1;
     while(hasParent(index) && parent(index) > items[index]) {
-        swap(getParentIndex(index), index);
+        swap(items[getParentIndex(index)], items[index]);
         index = getParentIndex(index);
     }
 }
@@ -110,7 +115,7 @@ minIntHeap::heapifyDown() {
 
 int main() {
 
-    minIntHeap heap(10, 0);
+    minIntHeap heap;
 
     heap.add(10);
     heap.add(15);
