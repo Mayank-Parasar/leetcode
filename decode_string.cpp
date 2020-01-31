@@ -76,7 +76,7 @@ string decode_string(string str) {
 
 int main() {
 
-    string str = "2[a2[b]c]";
+    string str = "2[a2[bd]c]";
 
     cout << decode_string(str);
     // cout << str+2;
