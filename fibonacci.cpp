@@ -19,6 +19,7 @@ Output: 13
  */
 
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -29,7 +30,27 @@ int fibonacci(int term) {
         return (fibonacci(term - 2) + fibonacci(term - 1));
 }
 
+// fibonacci using memoization
+vector<int> f_array(100, -1);
+
+int f(int n) {
+    if(f_array[n] != -1)
+        return f_array[n];
+    else if(n == 0 | n== 1){
+        return f_array[n];
+    }
+    else{
+        return (f_array[n] = f(n-1) + f(n-2));
+    }
+
+}
+
 int main() {
     cout << fibonacci(7);
+    int n = 7;
+    cout << endl;
+    f_array[0] = 0;
+    f_array[1] = 1;
+    cout << f(7);
     return 0;
 }
