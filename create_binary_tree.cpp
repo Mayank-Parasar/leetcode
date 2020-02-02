@@ -38,6 +38,44 @@ So leaf nodes with no children should be kept, and nodes with 2 children should 
 #      / \
 #     9   7
 
+  AND
+# Given this tree:
+#     1
+#    / \
+#   2   3
+#  /   / \
+# 0   9   4
+     /     \
+    5        7
+              \
+               6
+
+# We want a tree like:
+#     1
+#    / \
+#   0   3
+#      / \
+#     5   6
+
+   AND
+# Given this tree:
+#     1
+#    / \
+#   2   3
+#  /   / \
+# 0   9   4
+     /     \
+    5        7
+   /           \
+  8             6
+
+# We want a tree like:
+#     1
+#    / \
+#   0   3
+#      / \
+#     8   6
+
  */
 
 #include <iostream>
@@ -73,9 +111,14 @@ void tree_traversal(node* node_) {
     else if(node_->left->left != nullptr &&
             node_->left->right == nullptr) {
         // delete this node and traverse again to  its left
+        delete_left_node:
         node* tmp = node_->left;
         node_->left = node_->left->left;
         delete(tmp);
+        if(node_->left->left != nullptr &&
+           node_->left->right == nullptr) {
+            goto delete_left_node;
+        }
         tree_traversal(node_->left);
     }
     else if(node_->left->left == nullptr &&
@@ -104,12 +147,18 @@ void tree_traversal(node* node_) {
         delete(tmp);
         tree_traversal(node_->right);
     }
+    // check this condition in a loop utill there is one brach difference
     else if(node_->right->left == nullptr &&
             node_->right->right != nullptr) {
         // delete this node and traverse again to  its left
+        delete_right_node:
         node* tmp = node_->right;
         node_->right = node_->right->right;
         delete(tmp);
+        if(node_->right->left == nullptr &&
+           node_->right->right != nullptr) {
+            goto delete_right_node;
+        }
         tree_traversal(node_->right);
     }
     else if(node_->right->left == nullptr &&
@@ -133,6 +182,9 @@ int main() {
     node* node5 = new node(9);
     node* node6 = new node(4);
     node* node7 = new node(7);
+    node* node8 = new node(6);
+    node* node9 = new node(5);
+    node* node10 = new node(8);
 
     node1->left = node2;
     node1->right = node3;
@@ -141,6 +193,10 @@ int main() {
     node3->left = node5;
     node3->right = node6;
     node6->right = node7;
+
+    node7->right = node8;
+    node5->left = node9;
+    node9->left = node10;
 
     tree_traversal(node1);
 
