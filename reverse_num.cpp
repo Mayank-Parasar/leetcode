@@ -62,6 +62,8 @@ int main() {
 
     cout << reverse_num(-123);
     cout << endl;
+    cout << reverse_num(120);
+    cout << endl;
     cout << reverse_num(1000000045);
     return 0;
 }
