@@ -16,7 +16,7 @@ Output: 7
 
 using namespace std;
 
-int findSingle(vector<int>& arr, vector<int>& v, int min) {
+int findSingle(vector<int>& arr, vector<int>& v, int min) { // this is O(n) in computation and O(n) in space
 
     for(auto i : arr) {
         if(v[i-min] == -1)
@@ -34,6 +34,17 @@ int findSingle(vector<int>& arr, vector<int>& v, int min) {
 
 }
 
+
+// this is constant space and O(n) complexity
+int findSingle_XOR(vector<int>& arr) {
+    int res = 0;
+    for(auto i : arr) {
+        res = res ^ i;
+    }
+
+    return res;
+}
+
 int main() {
 
     vector<int> arr = {7, 3, 5, 5, 4, 3, 4, 8, 8};
@@ -43,6 +54,8 @@ int main() {
     vector<int> v(6, -1); // '3' maps to 0 and '8' maps to 5 index
 
     cout << findSingle(arr, v, 3);
+    cout << endl;
+    cout<< findSingle_XOR(arr);
 
     return 0;
 }
