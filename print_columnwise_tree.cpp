@@ -92,7 +92,7 @@ int main() {
     print_tree(node6);
 
     cout << endl;
-    // now print them in vitcical order
+    // now print them in vertical order
     for(auto i : vertical_traversal_map) {
         cout << i.first <<": ";
         for(auto k : i.second) {
