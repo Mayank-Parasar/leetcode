@@ -16,6 +16,17 @@ public:
 
 // The class that wants to be called back from the CallbackInterface
 // and implementa the callback funciton
+class Callee2 : public CallbackInterface {
+public:
+    // The callback function that caller will call.
+    int cbi_CallbackFucntion(int i) {
+        cout << "Callee::cbi_CallbackFunction() inside callback" << endl;
+        return 3 * i;
+    }
+};
+
+// The class that wants to be called back from the CallbackInterface
+// and implementa the callback funciton
 class Callee : public CallbackInterface {
 public:
     // The callback function that caller will call.
@@ -24,6 +35,7 @@ public:
         return 2 * i;
     }
 };
+
 
 
 class Caller {
@@ -53,7 +65,7 @@ int main() {
     Callee callee;
 
     // Connect the callback
-    caller.connectCallback(&callee);
+    caller.connectCallback(&callee); // binding
 
     // Test the callback
     caller.test();
