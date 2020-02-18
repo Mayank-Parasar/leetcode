@@ -28,7 +28,7 @@ int distinct_chars(deque<char> a) {
             v.push_back(i);
             // don't inc the cnt
         }
-        else {  // char is present
+        else {  // char is not present
             v.push_back(i);
             cnt++;
         }
