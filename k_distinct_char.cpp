@@ -41,7 +41,7 @@ int longest_substring(string a, int k) {
     deque<char> window;
     vector<int> size; // this contain the number of characters that window has
                         // with 'k' distinct characters
-    int curr_distinct_char = 0;
+    // int curr_distinct_char = 0;
     // scan over the string and populate the window
     for(int ii=0; ii < a.length(); ii++) {
 //        if(window.size() < k) {
