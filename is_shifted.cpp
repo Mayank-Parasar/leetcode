@@ -50,8 +50,10 @@ bool is_shifted(string stra, string strb) {
 
 int main() {
 
-    string stra = "abcde";
-    string strb = "cdeab";
+//    string stra = "abcde";
+//    string strb = "cdeab";
+    string stra = "abc";
+    string strb = "acb";
 
     cout << boolalpha;
     cout << is_shifted(stra, strb);
