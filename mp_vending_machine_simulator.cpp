@@ -76,7 +76,7 @@ public:
 		Quant_A(10),
 		Quant_B(5),
 		Quant_C(4),
-		Quant_D(7),
+		Quant_D(0),
 		profit_A(0.5),
 		profit_B(0.2),
 		profit_C(0.1),
@@ -181,14 +181,16 @@ vendingMachineSimulation::order(unsigned int q_a, unsigned int q_b,
         cout << "Rescheduling the refill event in next cycle as we ran out of the items!!" << endl;
         /*Caution: For this to work as intended, the eventQueue should be static for the base-class*/
         /* I could not resolve it... therefore making the eventQueue 'Global'*/
-        this->scheduleEvent(new refillEvent(time + 1, (need_reoder_a ? q_a : 0),
+        int schedule_time = time + 2;
+        this->scheduleEvent(new refillEvent(schedule_time, (need_reoder_a ? q_a : 0),
                                             (need_reoder_b ? q_b : 0),
                                             (need_reoder_c ? q_c : 0),
                                             (need_reoder_d ? q_d : 0)));
 
         // then order the vending machine in next cycle.
         cout << "Refilled the vending machine! Now completing the order in next to next cycle" << endl;
-        this->scheduleEvent(new orderEvent(time + 2, (need_reoder_a ? q_a : 0),
+        schedule_time = time + 4;
+        this->scheduleEvent(new orderEvent(schedule_time, (need_reoder_a ? q_a : 0),
                                            (need_reoder_b ? q_b : 0),
                                            (need_reoder_c ? q_c : 0),
                                            (need_reoder_d ? q_d : 0)));
@@ -238,12 +240,15 @@ int main(int argc, char const *argv[]) {
 	// pump the event in the event queue (out-of-order)
 	vendingMachineSimulation * simulator = new vendingMachineSimulation();
 	simulator->scheduleEvent(new orderEvent(5/*time*/, 3/*quantity-a*/, 1/*quantity-b*/, 2/*quantity-c*/, 1/*quantity-d*/));
-	simulator->scheduleEvent(new orderEvent(1/*time*/, 3, 1, 2, 1));
+    simulator->scheduleEvent(new orderEvent(1/*time*/, 3, 1, 2, 1));
+    simulator->scheduleEvent(new orderEvent(2/*time*/, 3, 1, 2, 1));
+    simulator->scheduleEvent(new orderEvent(3/*time*/, 3, 1, 2, 1));
+    simulator->scheduleEvent(new orderEvent(4/*time*/, 3, 1, 2, 1));
 	simulator->scheduleEvent(new orderEvent(7/*time*/, 3, 1, 2, 1));
 
     // Now we don't need this  function as machine will refill itself to satisfy the order... but just in case...
-	// fill the vending machine
-     simulator->scheduleEvent(new refillEvent(6/*time*/, 3, 1, 2, 1));
+	// fill the vending machine (to complete the simulation faster)
+	simulator->scheduleEvent(new refillEvent(6/*time*/, 3, 1, 2, 1));
 
 	// run  the simulaiton
 	simulator->run();
