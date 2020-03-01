@@ -35,8 +35,6 @@ struct eventComparator {
 		return (left->time > right->time);
 	}
 };
-// make it Global
-static priority_queue<event*, vector<event*>, eventComparator> eventQueue;
 
 class simulation {
 public:
@@ -48,13 +46,14 @@ public:
 	}
     static unsigned int time; // this time should be updated for all of its children therefore make it static
     // make event queue 'static' too, so that its derived class can schedule the event on the same event queue
+    static priority_queue<event*, vector<event*>, eventComparator> eventQueue;
 // protected:
 
 
 };
 
 unsigned int simulation::time = 0;
-//std::priority_queue<event*, vector<event*>, eventComparator> eventQueue;
+priority_queue<event*, vector<event*>, eventComparator> simulation::eventQueue;
 
 void simulation::run() {
 	while(!eventQueue.empty()) {
@@ -180,7 +179,6 @@ vendingMachineSimulation::order(unsigned int q_a, unsigned int q_b,
         // the flag when set should refill the vending machine appropriately
         cout << "Rescheduling the refill event in next cycle as we ran out of the items!!" << endl;
         /*Caution: For this to work as intended, the eventQueue should be static for the base-class*/
-        /* I could not resolve it... therefore making the eventQueue 'Global'*/
         int schedule_time = time + 2;
         this->scheduleEvent(new refillEvent(schedule_time, (need_reoder_a ? q_a : 0),
                                             (need_reoder_b ? q_b : 0),
