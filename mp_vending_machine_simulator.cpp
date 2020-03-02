@@ -12,6 +12,17 @@
  * the machine takes 'k' cycles before ejecting the selected product.
  * */
 
+// TODO:
+// Model contention ==>
+// 1. Suppose k people made simultaneous order...
+// Each order takes delta time to serve, model queuing delay
+// 2. when the machine is not able to satisfy the order then it fills
+// itself one-by-one serially to satisfy the order unlike refill
+// where the machine can be refilled with fixed content simultaneously
+// 3. Create priority among customers.. something along the line of
+// express-checkout (order-size) present in grocery stores today (example whole-food market)
+// Have not thought this through...
+// 4. order serving time should be a function of the order-size
 
 #include <iostream>
 #include <queue>
@@ -248,8 +259,9 @@ int main(int argc, char const *argv[]) {
 	// fill the vending machine (to complete the simulation faster)
 	simulator->scheduleEvent(new refillEvent(6/*time*/, 3, 1, 2, 1));
 
-	// run  the simulaiton
+	// run  the simulation
 	simulator->run();
 
+	delete simulator;
 	return 0;
 }
