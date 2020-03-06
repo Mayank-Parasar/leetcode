@@ -67,7 +67,7 @@ void simulation::run() {
         event * nextEvent = eventQueue.top();
         eventQueue.pop();
         time = nextEvent->time;
-        cout << "Event Queue is processing the event at time: " << time << endl;
+        // cout << "Event Queue is processing the event at time: " << time << endl;
         nextEvent->processEvent();
         // delete nextEvent;
     }
@@ -96,7 +96,7 @@ public:
 
     void processEvent() {
         // cout << "Trying to process task5 event at time: " << time << endl;
-        if(task3_queue.size() > 0 &&
+        while(task3_queue.size() > 0 &&
            task4_queue.size() > 0) {
             cout << "Processing task5 event at time: " << time << endl;
             task3_queue.pop_back();
@@ -123,7 +123,7 @@ public:
 
     void processEvent() {
         // cout << "Trying to process task4 event at time: " << time << endl;
-        if(task1_queue.size() > 0 &&
+        while(task1_queue.size() > 0 &&
             task2_queue.size() > 0) {
             cout << "Processing task4 event at time: " << time << endl;
             t5->task4_queue.push_back(this);
@@ -202,7 +202,7 @@ int main() {
     task5* tk5 = new task5(0)/*time*/; // instance of task-5
     task4* tk4 = new task4(0/*time*/, tk5, task_graph_simulator);
     task3* tk3 = new task3(90/*time*/, tk5, task_graph_simulator);
-    task2* tk2 = new task2(11/*time*/, tk4, task_graph_simulator);
+    task2* tk2 = new task2(30/*time*/, tk4, task_graph_simulator);
     task1* tk1 = new task1(12/*time*/, tk4, task_graph_simulator);
 
     /*Schedule independent events*/
@@ -211,6 +211,12 @@ int main() {
     task_graph_simulator->scheduleEvent(tk1);
 
     task_graph_simulator->run();
+    delete(tk5);
+    delete(tk4);
+    delete(tk3);
+    delete(tk2);
+    delete(tk1);
+    delete(task_graph_simulator);
 
     return 0;
 }
