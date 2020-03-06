@@ -26,10 +26,11 @@
 
 #include <iostream>
 #include <queue>
+#include <deque>
+
+#define DEBUG 0
 
 using namespace std;
-
-
 
 class event {
 public:
@@ -61,8 +62,7 @@ public:
     /*Debug Prints*/
     void showpq() {
         priority_queue<event*, vector<event*>, eventComparator>g = eventQueue;
-        while (!g.empty())
-        {
+        while (!g.empty()) {
             cout << '\t' << g.top()->time;
             g.pop();
         }
@@ -80,7 +80,7 @@ void simulation::run() {
         time = nextEvent->time;
         // cout << "Event Queue is processing the event at time: " << time << endl;
         nextEvent->processEvent();
-        delete nextEvent;
+        // delete nextEvent;
     }
 }
 
@@ -102,30 +102,18 @@ public:
     void enqueue_task4(task4* evT4) {
         task4_queue.push_back(evT4);
     }
-    static vector<task4*> task4_queue;
-    static vector<task3*> task3_queue;
+    static deque<task4*> task4_queue;
+    static deque<task3*> task3_queue;
+    void processEvent();
 
-    void processEvent() {
-        // cout << "Trying to process task5 event at time: " << time << endl;
-        while(task3_queue.size() > 0 &&
-           task4_queue.size() > 0) {
-            cout << "Processing task5 event at time: " << simulator->time << endl;
-            // cout << "task3_queue.size(): " << task3_queue.size() << " ";
-            // cout << "task4_queue.size(): " << task4_queue.size() << endl;
-            task3_queue.pop_back();
-            task4_queue.pop_back();
-        }
-
-    }
     simulation* simulator;
 };
-vector<task4*> task5::task4_queue;
-vector<task3*> task5::task3_queue;
+deque<task4*> task5::task4_queue;
+deque<task3*> task5::task3_queue;
 
 class task4 : public event {
 public:
-    task4(unsigned int t, /*task5* tk5,*/ simulation* sim_) : event(t) {
-        // t5 = tk5;
+    task4(unsigned int t, simulation* sim_) : event(t) {
         simulator = sim_;
     }
     void enqueue_task1(task1* evT1) {
@@ -135,30 +123,14 @@ public:
     void enqueue_task2(task2* evT2) {
         task2_queue.push_back(evT2);
     }
-    static vector<task1*> task1_queue;
-    static vector<task2*> task2_queue;
-
-    void processEvent() {
-        // cout << "Trying to process task4 event at time: " << time << endl;
-        while(task1_queue.size() > 0 &&
-            task2_queue.size() > 0) {
-
-            cout << "Processing task4 event at time: " << simulator->time << endl;
-            // cout << "task1_queue.size(): " << task1_queue.size() << " ";
-            // cout << "task2_queue.size(): " << task2_queue.size() << endl;
-
-            task5 * t5_ptr = new task5(simulator->time+2, simulator);
-            t5_ptr->task4_queue.push_back(this);
-            simulator->scheduleEvent(t5_ptr);
-            task1_queue.pop_back();
-            task2_queue.pop_back();
-        }
-    }
+    static deque<task1*> task1_queue;
+    static deque<task2*> task2_queue;
+    void processEvent();
 
     simulation* simulator;
 };
-vector<task1*> task4::task1_queue;
-vector<task2*> task4::task2_queue;
+deque<task1*> task4::task1_queue;
+deque<task2*> task4::task2_queue;
 
 class task3 : public event {
 public:
@@ -169,7 +141,9 @@ public:
         cout << "Processing task3 event at time: " << simulator->time << endl;
         task5 * t5_ptr = new task5(simulator->time+2, simulator);
         t5_ptr->task3_queue.push_back(this);
-        simulator->scheduleEvent(t5_ptr);
+        if(t5_ptr->task4_queue.size() > 0) {
+            simulator->scheduleEvent(t5_ptr);
+        }
     }
 
     simulation* simulator;
@@ -185,7 +159,9 @@ public:
         /* generate a new event here to put on the task queue... */
         task4* tk4_ptr = new task4(simulator->time+2/*time*/, simulator);
         tk4_ptr->task2_queue.push_back(this);
-        simulator->scheduleEvent(tk4_ptr);
+        if(tk4_ptr->task1_queue.size() > 0) {
+            simulator->scheduleEvent(tk4_ptr);
+        }
     }
 
 
@@ -203,13 +179,64 @@ public:
         /* generate a new event here to put on the task queue... */
         task4* tk4_ptr = new task4(simulator->time+2/*time*/, simulator);
         tk4_ptr->task1_queue.push_back(this);
-        simulator->scheduleEvent(tk4_ptr);
+        /* only schedule this event if the queue sizes at the tk4_ptr
+           fmeet the requirement*/
+        if(tk4_ptr->task2_queue.size() > 0) {
+            simulator->scheduleEvent(tk4_ptr);
+        }
     }
 
     simulation* simulator;
 };
 
+void
+task4::processEvent() {
+    // cout << "Trying to process task4 event at time: " << time << endl;
+    while(task1_queue.size() > 0 &&
+          task2_queue.size() > 0) {
 
+        cout << "Processing task4 event at time: " << simulator->time << endl;
+#if(DEBUG)
+        for(auto i: task1_queue)
+            cout << i->time << "\t";
+        cout << endl;
+        for(auto i: task2_queue)
+            cout << i->time << "\t";
+        cout << endl;
+        cout << "Consuming: task1_queue.front()->time: " << task1_queue.front()->time << endl;
+        cout << "Consuming: task2_queue.front()->time: " << task2_queue.front()->time << endl;
+#endif
+        task5 * t5_ptr = new task5(simulator->time+2, simulator);
+        t5_ptr->task4_queue.push_back(this);
+        if(t5_ptr->task3_queue.size() > 0) {
+            simulator->scheduleEvent(t5_ptr);
+        }
+        task1_queue.pop_front();
+        task2_queue.pop_front();
+    }
+}
+
+void
+task5::processEvent() {
+    // cout << "Trying to process task5 event at time: " << time << endl;
+    while(task3_queue.size() > 0 &&
+          task4_queue.size() > 0) {
+        cout << "Processing task5 event at time: " << simulator->time << endl;
+#if(DEBUG)
+        for(auto i: task3_queue)
+            cout << i->time << "\t";
+        cout << endl;
+        for(auto i: task4_queue)
+            cout << i->time << "\t";
+        cout << endl;
+        cout << "Consuming: task3_queue.front()->time: " << task3_queue.front()->time << endl;
+        cout << "Consuming: task4_queue.front()->time: " << task4_queue.front()->time << endl;
+#endif
+        task3_queue.pop_front();
+        task4_queue.pop_front();
+    }
+
+}
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -222,6 +249,7 @@ int main() {
     task3* tk3 = new task3(90/*time*/, task_graph_simulator);
     task2* tk2 = new task2(30/*time*/, task_graph_simulator);
     task1* tk1 = new task1(12/*time*/, task_graph_simulator);
+
 
     /*Schedule independent events*/
     // task-1
