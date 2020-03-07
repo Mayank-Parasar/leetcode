@@ -211,8 +211,12 @@ task4::processEvent() {
         if(t5_ptr->task3_queue.size() > 0) {
             simulator->scheduleEvent(t5_ptr);
         }
+        task1* tmp_tk1 = task1_queue.front();
+        task2* tmp_tk2 = task2_queue.front();
         task1_queue.pop_front();
         task2_queue.pop_front();
+        delete(tmp_tk1);
+        delete(tmp_tk2);
     }
 }
 
@@ -232,10 +236,14 @@ task5::processEvent() {
         cout << "Consuming: task3_queue.front()->time: " << task3_queue.front()->time << endl;
         cout << "Consuming: task4_queue.front()->time: " << task4_queue.front()->time << endl;
 #endif
+        task3* tmp_tk3 = task3_queue.front();
+        task4* tmp_tk4 = task4_queue.front();
         task3_queue.pop_front();
         task4_queue.pop_front();
+        delete(tmp_tk3);
+        delete(tmp_tk4);
     }
-
+    delete this;
 }
 
 ////////////////////////////////////////////////////////////////////////
