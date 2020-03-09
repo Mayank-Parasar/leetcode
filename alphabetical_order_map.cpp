@@ -7,8 +7,8 @@ Given a non-empty list of words, return the k most frequent words.
  the word with lower alphabetical order comes first. Input will contain only lower-case letters.
 
 Example:
-Input: ["daily", "interview", "pro", "pro",
-"for", "daily", "pro", "problems"], k = 2
+Input: ["walk", "the", "dog", "dog",
+"walk", "daily", "pro", "problem"], k = 2
 Output: ["pro", "daily"]
 */
 
@@ -30,8 +30,8 @@ int main() {
 
     map<string, int> mymap;
 
-    vector<string> vec = {"daily", "interview", "pro", "pro",
-                          "for", "daily", "pro", "problems"};
+    vector<string> vec = {"walk", "the", "dog", "dog",
+                          "walk", "daily", "walk", "problem"};
     int k = 3;
 
     for(auto i : vec) {
