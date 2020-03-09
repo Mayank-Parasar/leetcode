@@ -20,6 +20,8 @@ public:
     void initialize_tensor(double arr[]);
 
     void multiply_row_tensor(vector<double> row);
+    void multiply_scalar_tensor(double val);
+    void multiply_matrix_tensor(vector<vector<double>> mat);
     void print_tensor();
 
     vector<int> size;
@@ -63,11 +65,33 @@ tensor::multiply_row_tensor(vector<double> row) {
     cout << endl << "num multiplications: " << num_mult << endl;
 }
 
+
+void
+tensor:: multiply_matrix_tensor(vector<vector<double>> mat) {
+    int row = mat.size();
+    int col = mat[0].size();
+    for(int ii = 0; ii < total_elem; ii += row*col) {
+        for(int jj = 0; jj < row; jj++) {  // row
+            for(int kk = 0; kk < col; kk++) {  // col
+                tensor_[ii+row*kk+jj] *= mat[jj][kk];
+            }
+        }
+    }
+}
+
 void
 tensor::print_tensor() {
 
     for(int ii=0; ii < total_elem ; ii++) {
         cout << tensor_[ii] << " ";
+    }
+}
+
+
+void
+tensor::multiply_scalar_tensor(double val) {
+    for(int ii = 0; ii < total_elem; ii ++) {
+        tensor_[ii] *= val;
     }
 }
 
@@ -97,6 +121,19 @@ int main() {
     t->multiply_row_tensor(row);
     cout << endl;
 
+    t->print_tensor();
+
+    t->multiply_scalar_tensor((double)3.0);
+    cout << endl;
+    t->print_tensor();
+
+    vector<vector<double>>matrix = { {3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0},
+                                     {3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0},
+                                     {3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0},
+                                     {3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0}};
+
+    t->multiply_matrix_tensor(matrix);
+    cout << endl;
     t->print_tensor();
 
     delete t;
