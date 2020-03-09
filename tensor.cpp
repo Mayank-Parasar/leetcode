@@ -19,10 +19,11 @@ public:
     void create_tensor(vector<int> size);
     void initialize_tensor(double arr[]);
 
+    void multiply_row_tensor(vector<double> row);
     void print_tensor();
 
     vector<int> size;
-    int total_space;
+    int total_elem;
     double * tensor_;
 
 };
@@ -34,7 +35,7 @@ tensor::create_tensor(vector<int> size) {
     for(auto i : size) {
         total_size *= i;
     }
-    total_space = total_size;
+    total_elem = total_size;
     // allocate memory for the tensor
     // and put it in the member variable tensor
     tensor_ = (double*) malloc(sizeof(double)*total_size);
@@ -45,15 +46,27 @@ tensor::create_tensor(vector<int> size) {
 void
 tensor::initialize_tensor(double arr[]) {
 
-    for(int ii=0; ii < total_space ; ii++) {
+    for(int ii=0; ii < total_elem ; ii++) {
         tensor_[ii] = arr[ii];
     }
 }
 
 void
+tensor::multiply_row_tensor(vector<double> row) {
+    int num_mult = 0;
+    for(int ii = 0; ii < total_elem; ii += row.size()) {
+        for(int jj = 0; jj < row.size(); jj++) {
+            tensor_[ii+jj] *= row[jj];
+        }
+        num_mult++;
+    }
+    cout << endl << "num multiplications: " << num_mult << endl;
+}
+
+void
 tensor::print_tensor() {
 
-    for(int ii=0; ii < total_space ; ii++) {
+    for(int ii=0; ii < total_elem ; ii++) {
         cout << tensor_[ii] << " ";
     }
 }
@@ -66,9 +79,9 @@ int main() {
     t->create_tensor(t->size);
 
     // iniitalize tensor
-    double arr[t->total_space];
+    double arr[t->total_elem];
 
-    for(int ii=0; ii < t->total_space; ii++) {
+    for(int ii=0; ii < t->total_elem; ii++) {
         arr[ii] = 1.25;
     }
 
@@ -80,6 +93,11 @@ int main() {
 
     t->print_tensor();
 
+    vector<double> row(10, (double)2.0);
+    t->multiply_row_tensor(row);
+    cout << endl;
+
+    t->print_tensor();
 
     delete t;
 
