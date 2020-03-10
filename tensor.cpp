@@ -10,9 +10,9 @@
 
 using namespace std;
 
-class tensor {
+class Tensor {
 public:
-    ~tensor() {
+    ~Tensor() {
         cout << endl << "Call to the destructor " << endl;
         delete tensor_;
     }
@@ -31,7 +31,7 @@ public:
 };
 
 void
-tensor::create_tensor(vector<int> size) {
+Tensor::create_tensor(vector<int> size) {
     int total_size = 1;
 
     for(auto i : size) {
@@ -46,7 +46,7 @@ tensor::create_tensor(vector<int> size) {
 }
 
 void
-tensor::initialize_tensor(double arr[]) {
+Tensor::initialize_tensor(double arr[]) {
 
     for(int ii=0; ii < total_elem ; ii++) {
         tensor_[ii] = arr[ii];
@@ -54,7 +54,7 @@ tensor::initialize_tensor(double arr[]) {
 }
 
 void
-tensor::multiply_row_tensor(vector<double> row) {
+Tensor::multiply_row_tensor(vector<double> row) {
     int num_mult = 0;
     for(int ii = 0; ii < total_elem; ii += row.size()) {
         for(int jj = 0; jj < row.size(); jj++) {
@@ -67,7 +67,7 @@ tensor::multiply_row_tensor(vector<double> row) {
 
 
 void
-tensor:: multiply_matrix_tensor(vector<vector<double>> mat) {
+Tensor:: multiply_matrix_tensor(vector<vector<double>> mat) {
     int row = mat.size();
     int col = mat[0].size();
     for(int ii = 0; ii < total_elem; ii += row*col) {
@@ -80,7 +80,7 @@ tensor:: multiply_matrix_tensor(vector<vector<double>> mat) {
 }
 
 void
-tensor::print_tensor() {
+Tensor::print_tensor() {
 
     for(int ii=0; ii < total_elem ; ii++) {
         cout << tensor_[ii] << " ";
@@ -89,7 +89,7 @@ tensor::print_tensor() {
 
 
 void
-tensor::multiply_scalar_tensor(double val) {
+Tensor::multiply_scalar_tensor(double val) {
     for(int ii = 0; ii < total_elem; ii ++) {
         tensor_[ii] *= val;
     }
@@ -97,7 +97,7 @@ tensor::multiply_scalar_tensor(double val) {
 
 int main() {
 
-    tensor * t = new tensor();
+    Tensor * t = new Tensor();
 
     t->size = {10, 4, 5};
     t->create_tensor(t->size);
