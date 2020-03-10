@@ -43,7 +43,8 @@ Tensor::create_tensor(vector<int> size) {
     total_elem = total_size;
     // allocate memory for the tensor
     // and put it in the member variable tensor
-    tensor_ = (double*) malloc(sizeof(double)*total_size);
+    tensor_ = (double*) malloc(sizeof(double)*total_size); // this does not give error!!
+//    tensor_ =  new double(sizeof(double)*total_size); // this gives memory error!! (why?)
 
     return;
 }
@@ -130,10 +131,10 @@ int main() {
     cout << endl;
     t->print_tensor();
 
-    vector<vector<double>>matrix = { {3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0},
-                                     {3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0},
-                                     {3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0},
-                                     {3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0}};
+    vector<vector<double>>matrix = {{3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0},
+                                    {3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0},
+                                    {3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0},
+                                    {3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0}};
 
     t->multiply_matrix_tensor(matrix);
     cout << endl;
