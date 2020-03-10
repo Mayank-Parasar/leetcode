@@ -23,7 +23,10 @@ public:
     void multiply_scalar_tensor(double val);
     void multiply_matrix_tensor(vector<vector<double>> mat);
     void print_tensor();
+    vector<int>& get_size() { return size;}; // this can be used to set-size as well
 
+    int get_total_elem() { return total_elem; };
+private:
     vector<int> size;
     int total_elem;
     double * tensor_;
@@ -99,13 +102,13 @@ int main() {
 
     Tensor * t = new Tensor();
 
-    t->size = {10, 4, 5};
-    t->create_tensor(t->size);
+    t->get_size() = {10, 4, 5}; // the getter func gives the reference to set the size vector
+    t->create_tensor(t->get_size());
 
     // iniitalize tensor
-    double arr[t->total_elem];
+    double arr[t->get_total_elem()];
 
-    for(int ii=0; ii < t->total_elem; ii++) {
+    for(int ii=0; ii < t->get_total_elem(); ii++) {
         arr[ii] = 1.25;
     }
 
