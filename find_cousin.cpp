@@ -44,17 +44,21 @@ void in_order_traversal(node* node_) {
     if(node_ == nullptr)
         return;
     else {
-        if(node_->val == 5) {
-            level_requested = counter;
-        }
+        if( node_->right != nullptr)
+            if (node_->right->val == 5) {
+                level_requested = counter+1;
+            }
         mymap[counter].push_back(node_->val);
         // if you are going a level down then increment the counter
-        counter++;
-        in_order_traversal(node_->left);
-        counter--;
-        counter++;
-        in_order_traversal(node_->right);
-        counter--;
+        if( node_->right != nullptr)
+            if (node_->right->val != 5) { // do not recur the parent node of '5'
+                counter++;
+                in_order_traversal(node_->left);
+                counter--;
+                counter++;
+                in_order_traversal(node_->right);
+                counter--;
+            }
     }
 }
 
