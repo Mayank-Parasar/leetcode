@@ -12,9 +12,13 @@ using namespace std;
 
 class Tensor {
 public:
+    Tensor() {
+
+    }
     ~Tensor() {
-        cout << endl << "Call to the destructor " << endl;
-        delete tensor_;
+        cout << endl << "Call to the destructor of Tensor" << endl;
+        free(tensor_);
+        cout << " Freed the memory pointed by the member variable of the object pointer of Tensor" << endl;
     }
     void create_tensor(vector<int> size);
     void initialize_tensor(double arr[]);
@@ -139,9 +143,9 @@ int main() {
     t->multiply_matrix_tensor(matrix);
     cout << endl;
     t->print_tensor();
-
-    delete t;
-
+    t->~Tensor();  // should not call explicit destructor
+    free(t);
+    cout << endl<< "after freeing the object pointer 't'" << endl;
 
     return 0;
 }
