@@ -51,5 +51,14 @@ int main() {
     cout << endl;
     reduced_sum = reduce(9999);
     cout << "result after reducing the number: " << reduced_sum << endl;
+
+    cout << endl;
+    reduced_sum = reduce(526004760);
+    cout << "result after reducing the number: " << reduced_sum << endl;
+
+    cout << endl;
+    reduced_sum = reduce(689697);
+    cout << "result after reducing the number: " << reduced_sum << endl;
+
     return 0;
 }
