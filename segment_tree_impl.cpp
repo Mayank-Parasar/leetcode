@@ -5,7 +5,7 @@
 /*
  * Create a class that initializes with a list of numbers and has one method called sum. sum should take in
  * two parameters, start_idx and end_idx and return the sum of the list
- * from start_idx (inclusive) to end_idx (exclusive).
+ * from start_idx (inclusive) to end_idx (inclusive).
 
 You should optimize for the sum method.
 
@@ -25,46 +25,125 @@ print(ListFastSum([1, 2, 3, 4, 5, 6, 7]).sum(2, 5))
 
 #include <iostream>
 #include <vector>
-#include <math.h>
 
 using namespace std;
 
-struct segmentTree {
+struct node {
     int sum;
-    segmentTree *left;
-    segmentTree *right;
-
-    segmentTree() {
-        sum = 0;
+    node* left;
+    node* right;
+    int strt;
+    int end;
+    node(int x) : sum(x)
+    {
         left = nullptr;
         right = nullptr;
+        strt = -1;
+        end = -1;
     }
+
 };
 
 class fastSum {
 public:
 
-    fastSum(vector<int> array) {
-        arr = array;
-        int x = (int) (ceil(log2(arr.size())));
-
-        // maximum size of segment tree
-        int max_size
-    };
-
-    int naive_sum(int start, int end);
-    // this is a segment tree
-    void populate_sumTree() {
-
-
+    //ctor
+    fastSum(vector<int> vec) {
+        arr = vec;
+        // build tree in ctor
+        arrTree = this->build(0, vec.size()-1);
     }
-    int fast_sum(int start, int end);
+
+    int range_sum(int start, int end) {
+        int sum = 0;
+        for (int ii = start; ii <= end; ii++) {
+            sum += arr[ii];
+        }
+        return sum;
+    }
+
+    // this is a segment tree
+    node* build(int start, int end) {
+        int mid = (start + end) / 2;
+        cout << "start: " << start << " mid: " << mid << " end: " << end << endl;
+        if(mid > end || start > mid || start > end)
+            return nullptr;
+
+        node* node_ = new node(range_sum(start, end));
+        node_->strt = start;
+        node_->end = end;
+        if(start == end)
+            return node_;
+
+        if(mid >= start)
+            node_->left = build(start, mid);
+        if(end >= mid + 1)
+            node_->right = build(mid+1, end);
+
+        return node_;
+    }
+
+    void inorder_traversal(node* node_) {
+        if(node_ == nullptr)
+            return;
+        else {
+            inorder_traversal(node_->left);
+            cout << node_->sum << " " << "[ " << node_->strt
+                 << "," <<node_->end <<" ]" << "\t" ;
+            inorder_traversal(node_->right);
+        }
+    }
+
+    int Query(node* node_, int start, int end) {
+        assert(end > start);
+        if(node_ == nullptr)
+            return 0;
+        // no overlap
+        if(start > node_->end || end < node_->strt)
+            return 0;
+
+        // total overlap
+        if(start<= node_->strt && end >= node_->end) {
+            query_sum += node_->sum;
+            return query_sum;
+        }
+
+        // partial overlap: proceed in both direction
+        if(start>= node_->strt || end <= node_->end) {
+            Query(node_->left, start, end);
+            Query(node_->right, start, end);
+        }
+
+        return query_sum;
+    }
+    int fast_sum(int start, int end) {
+        query_sum = Query(arrTree, start, end);
+        return query_sum;
+    }
+
+    int naive_sum(int start, int end) {
+        int sum = 0;
+        for(int ii = start; ii <= end; ii++) {
+            sum += arr[ii];
+        }
+        return sum;
+    }
+
 private:
-    segmentTree* arrTree;   // root node of a segment tree
+    node* arrTree;   // root node of a segment tree
     vector<int> arr;
+    int query_sum;
 };
 
 int main() {
+    vector<int> vec = {1, 3, 5, 7, 9, 1};
+
+    fastSum* obj_ptr = new fastSum(vec);
+
+    cout << "naive-sum: " << obj_ptr->naive_sum(2, 4);
+    cout << endl;
+    cout << "fast-sum: " << obj_ptr->fast_sum(2, 4);
+
 
     return 0;
 }
