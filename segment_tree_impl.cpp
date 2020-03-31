@@ -8,16 +8,6 @@
  * from start_idx (inclusive) to end_idx (inclusive).
 
 You should optimize for the sum method.
-
-Here's the class:
-
-class ListFastSum:
-  def __init__(self, nums):
-    self.nums = nums
-
-  def sum(self, start_idx, end_idx):
-    # Fill this in.
-
 print(ListFastSum([1, 2, 3, 4, 5, 6, 7]).sum(2, 5))
 # 12 because 3 + 4 + 5 = 12
  *
