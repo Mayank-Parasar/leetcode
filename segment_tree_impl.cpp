@@ -55,7 +55,7 @@ public:
     // this is a segment tree
     node* build(int start, int end) {
         int mid = (start + end) / 2;
-        cout << "start: " << start << " mid: " << mid << " end: " << end << endl;
+        // cout << "start: " << start << " mid: " << mid << " end: " << end << endl;
         if(mid > end || start > mid || start > end)
             return nullptr;
 
@@ -127,13 +127,14 @@ private:
 
 int main() {
     vector<int> vec = {1, 3, 5, 7, 9, 1};
+    // vector<int> vec(50000000, 1); // for large array
 
     fastSum* obj_ptr = new fastSum(vec);
 
+    // cout << "naive-sum: " << obj_ptr->naive_sum(20000000, 40000000);
     cout << "naive-sum: " << obj_ptr->naive_sum(2, 4);
     cout << endl;
+    // cout << "fast-sum: " << obj_ptr->fast_sum(20000000, 40000000);
     cout << "fast-sum: " << obj_ptr->fast_sum(2, 4);
-
-
     return 0;
 }
