@@ -58,14 +58,18 @@ int main() {
     for(auto i : matrix) {
         if((int)i.size() < min_length)
             min_length = (int)i.size();
-        // for(auto k : i) {
-            // cout << k << " ";
-
-        // }
-        // cout << endl;
+//         for(auto k : i) {
+//             cout << k << " ";
+//
+//         }
+//         cout << endl;
     }
 
-    cout << min_length << " coins" << endl;
-
+    if(matrix.size() == 0) {
+        cout << "None" << endl;
+    }
+    else {
+        cout << min_length << " coins" << endl;
+    }
     return 0;
 }
