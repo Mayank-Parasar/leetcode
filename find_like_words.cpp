@@ -84,7 +84,9 @@ vector<string> vecotize_string(string str) {
 
 int main() {
 
-    string str_orig = "God likes good dog";
+    string str_orig = "God likes good dog and dog";
+//    string str_orig = "Name of the game is Name";
+
     string str(str_orig);
     // remove case-sensitivity
     transform(str.begin(), str.end(), str.begin(), ::tolower);
