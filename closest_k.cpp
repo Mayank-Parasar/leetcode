@@ -27,7 +27,7 @@ vector<int> k_closest_neighbours(vector<int> arr, int k, int x) {
             result.push_back(i);
         }
         else {
-            int diff = abs(x - i);
+
             int max_diff = -1;
             int curr_diff;
             int idx;
@@ -52,7 +52,7 @@ int main() {
     vector<int> arr = {1, 3, 7, 8, 9};  // given that this array is sorted
 //    vector<int> arr1 = {6, 7, 8, 9, 5};
     int k = 3;
-    int x = 5;
+    int x = -1;
 
     vector<int> result = k_closest_neighbours(arr, k, x);
 
