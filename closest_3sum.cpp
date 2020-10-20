@@ -13,7 +13,8 @@ def closest_3sum(nums, target):
 
 print(closest_3sum([2, 1, -5, 4], -1))
 # Closest sum is -5+1+2 = -2 OR -5+1+4 = 0
-# print [-5, 1, 2]*/
+# print [-5, 1, 2]
+*/
 
 
 #include <iostream>
