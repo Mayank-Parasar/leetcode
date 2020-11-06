@@ -10,28 +10,29 @@
 
 #include <iostream>
 #include <vector>
-
+#include <cstdlib> // for rand() and srand()
+#include <ctime> // for time()
+//#include <algorithm>
+#include <chrono>
 using namespace  std;
-
+using namespace std::chrono;
 vector<vector<int> > result;
-vector<vector<int>> circular_permulations;
+#define MAX_PERMUTATIONS (5000)
 
 void permute(vector<int> v, int start, int end) {
+    if(result.size() >= MAX_PERMUTATIONS)
+        return;
     if(start == end) {
         // check if this vector present in
         // the 'circular_permutation
         // if not, store all its circular permutations
         // before storing it in 'result' vectore
-        for(auto  i : circular_permulations) {
-            if (v == i) {
-                return;
-            }
-        }
-        /* vector is not present.. store all its circular
-         * permutations*/
+
         for(int i = 0; i < v.size(); i++) {
             rotate(v.begin(), v.begin()+1, v.end());
-            circular_permulations.push_back(v);
+            for(auto i : result)
+                if (i == v)
+                    return;
         }
         // now push this vector in the result
         result.push_back(v);
@@ -42,6 +43,8 @@ void permute(vector<int> v, int start, int end) {
             // Swap
             swap(v[start], v[i]);
             // Recurse
+            if(result.size() >= MAX_PERMUTATIONS)
+                return;
             permute(v, start+1, end);
 
             // Backtrack: SwapBack
@@ -49,9 +52,42 @@ void permute(vector<int> v, int start, int end) {
         }
     }
 }
+// To be used only for very large number of permutations
+// only to get jumbled permutations
+// put in the terminating condition
+void permute2(vector<int>(v)) {
+    if (v.size() < 10)
+        return;
+    srand((unsigned) time(0));
+    int sizeOfVector = v.size();
+    // shuffle
+    shuffle:
+    /* Fisher-Yates shuffle algorithm */
+    for (int k = 0; k < sizeOfVector; k++) {
+        int r = k + rand() % (sizeOfVector - k); // careful here!
+        swap(v[k], v[r]);
+    }
+    // check
+    for(int i = 0; i < v.size(); i++) {
+        rotate(v.begin(), v.begin()+1, v.end());
+        for(auto i : result)
+            if (i == v)
+                goto shuffle;
+    }
+    //store
+    if(result.size() < MAX_PERMUTATIONS) {
+        result.push_back(v);
+        goto shuffle;
+    }
+    else
+        return;
+}
+
 int main() {
-//    vector<int> vec = {1, 2, 3, 4, 5};
-    vector<int> vec = {1, 1, 2, 2, 2, 2};
+//    vector<int> vec = {1, 2, 3, 4, 5, 6, 7, 8};
+//    vector<int> vec = {1, 1, 2, 2, 2, 2};
+//    vector<int> vec = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    vector<int> vec = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
 
     // Print all rotation of this vector:
 //    for(int i = 0; i <= vec.size(); i++) {
@@ -59,8 +95,13 @@ int main() {
 //        cout << endl;
 //        rotate(vec.begin(), vec.begin()+1, vec.end());
 //    }
-
+    // Get starting timepoint
+    auto start = high_resolution_clock::now();
     permute(vec, 0, vec.size()-1);
+//    permute2(vec);
+    // Get ending timepoint
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
     // print the result:
     int count = 0;
     for(auto i : result) {
@@ -71,6 +112,7 @@ int main() {
         count++;
     }
     cout << "Total ring topologies (aka Necklace permutations) : " << count << endl;
+    cout << "Duration of time elapsed: " << duration.count() << " microseconds" << endl;
     // prune this result
 
     return 0;
