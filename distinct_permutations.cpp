@@ -17,22 +17,22 @@
 using namespace  std;
 using namespace std::chrono;
 vector<vector<int> > result;
-#define MAX_PERMUTATIONS (5000)
+#define MAX_PERMUTATIONS (10000)
 
 void permute(vector<int> v, int start, int end) {
-    if(result.size() >= MAX_PERMUTATIONS)
-        return;
+//    if(result.size() >= MAX_PERMUTATIONS)
+//        return;
     if(start == end) {
         // check if this vector present in
         // the 'circular_permutation
         // if not, store all its circular permutations
         // before storing it in 'result' vectore
-
-        for(int i = 0; i < v.size(); i++) {
-            rotate(v.begin(), v.begin()+1, v.end());
-            for(auto i : result)
+        for(auto i : result) {
+            for (int itr = 0; itr < v.size(); itr++) {
+                rotate(v.begin(), v.begin() + 1, v.end());
                 if (i == v)
                     return;
+            }
         }
         // now push this vector in the result
         result.push_back(v);
@@ -43,8 +43,8 @@ void permute(vector<int> v, int start, int end) {
             // Swap
             swap(v[start], v[i]);
             // Recurse
-            if(result.size() >= MAX_PERMUTATIONS)
-                return;
+//            if(result.size() >= MAX_PERMUTATIONS)
+//                return;
             permute(v, start+1, end);
 
             // Backtrack: SwapBack
@@ -88,6 +88,10 @@ int main() {
 //    vector<int> vec = {1, 1, 2, 2, 2, 2};
 //    vector<int> vec = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     vector<int> vec = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+
+    vector<int> v(5, 0);
+    for(auto i : v)
+        cout << i << " ";
 
     // Print all rotation of this vector:
 //    for(int i = 0; i <= vec.size(); i++) {
