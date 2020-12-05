@@ -13,7 +13,9 @@
 
 using namespace std;
 
-vector<int> selection_sort(vector<int> a) { // deliberately passed by value so as not to modify the original array
+template<typename T>
+vector<T> selection_sort(vector<T> a) { // deliberately passed by value so
+    // as not to modify the original array
 
     for(int ii= 0; ii < a.size(); ii++) {
         for(int kk=ii+1; kk < a.size(); kk++) {
@@ -25,19 +27,20 @@ vector<int> selection_sort(vector<int> a) { // deliberately passed by value so a
     return a;
 }
 
-vector<int> bubble_sort(vector<int> a) {
+template<typename T>
+vector<T> bubble_sort(vector<T> a) {
     // end condition is the pass where there is no swap
-    bool swaped = true;
+    bool swapped = true;
     int num_pass = 0;
-    while(swaped) {
+    while(swapped) {
         num_pass++;
         // do the bubble sort
         // reset the swap here
-        swaped = false; // end condition
+        swapped = false; // end condition
         for(int ii = 0; ii < a.size() - 1; ii++) {
             if(a[ii] > a[ii+1]) {
                 swap(a[ii], a[ii+1]);
-                swaped = true;
+                swapped = true;
             }
         }
     }
@@ -45,7 +48,8 @@ vector<int> bubble_sort(vector<int> a) {
     return a;
 }
 
-vector<int> insertion_sort(vector<int> a) {
+template<typename T>
+vector<T> insertion_sort(vector<T> a) {
     // starting from size = 1, check if the subarray is sorted
     // if not then insert the element at appropriate position
     // in the subarray.
@@ -68,7 +72,8 @@ vector<int> insertion_sort(vector<int> a) {
     return a;
 }
 
-int partition(vector<int>& a, int low, int high) {
+template<typename T>
+T partition(vector<T>& a, int low, int high) {
     int pivot = low + ( std::rand() % ( high - low + 1 ) );
 
     // cout << "low: " << low << " high: " << high << " pivot: " << pivot << endl;
@@ -92,7 +97,9 @@ int partition(vector<int>& a, int low, int high) {
 }
 
 // with randomized 'pivot'
-vector<int> quick_sort(vector<int>& a, int low, int high) { // need to pass by reference for quick sort
+template<typename T>
+vector<T> quick_sort(vector<T>& a, int low, int high) { // need to pass by
+    // reference for quick sort
     if(low < high) {
 
         int pivot_ = partition(a, low, high);
@@ -107,7 +114,7 @@ vector<int> quick_sort(vector<int>& a, int low, int high) { // need to pass by r
 
 // merge the two sub array of a into a
 // first sub-array is a[l ... m]
-// second sub-array is a[m+1 ... r]
+// second sub-array is a[m+1 ... r] 
 void merge(vector<int>&a, int l, int m, int r) {
 
     vector<int>::const_iterator left = a.begin() + l;
