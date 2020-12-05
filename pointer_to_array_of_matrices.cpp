@@ -36,10 +36,11 @@
 #include <vector>
 
 std::vector<std::vector<std::vector<int>>*> mat_ptr;
+using namespace  std;
+vector<int>* vec_ptr;
 
 int main(int argc, char* argv[]) {
 
-    // mat_ptr = new vector<vector<int>>(atoi(argv[1]));
     for(int mat_id = 2; mat_id < argc; mat_id++)
     {
         std::vector<std::vector<int>>* tmp;
@@ -60,6 +61,16 @@ int main(int argc, char* argv[]) {
             }
             std::cout << std::endl;
         }
+    }
+
+    vec_ptr = new vector<int>(10, 1);
+    for (int ii = 0; ii < vec_ptr->size(); ++ii) {
+        cout << (vec_ptr+ii) << endl;
+        *(vec_ptr+ii) = 5;
+    }
+    cout << "-----------" << endl;
+    for(int i : *vec_ptr) {
+        cout << i << endl;
     }
 
     return 0;
